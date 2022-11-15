@@ -7,6 +7,62 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="tttt"></Button>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <TabControl Grid.Row="0">
+            
+            <TabItem Name="EmployeesTab">
+                <TabItem.Header>
+                    <TextBlock Text="Employees"/>
+                </TabItem.Header>
+                <ListView>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name"/>
+                            <GridViewColumn Header="Surname"/>
+                            <GridViewColumn Header="Phone"/>
+                            <GridViewColumn Header="Salary"/>
+                            <GridViewColumn Header="Position"/>
+                            <GridViewColumn Header="Department"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>  
+            
+            <TabItem Name="PositionsTab">
+                <TabItem.Header>
+                    <TextBlock Text="Positions"/>
+                </TabItem.Header>
+                <ListView>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name"/>
+                            <GridViewColumn Header="Salary"/>
+                            <GridViewColumn Header="Employees count"/>
+                            <GridViewColumn Header="Max number"/>
+                            <GridViewColumn Header="Department"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>     
+            
+            <TabItem Name="DepartmentsTab">
+                <TabItem.Header>
+                    <TextBlock Text="Departments"/>
+                </TabItem.Header>
+                <ListView>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name"/>
+                            <GridViewColumn Header="Positions count"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            
+        </TabControl>
     </Grid>
 </Window>
