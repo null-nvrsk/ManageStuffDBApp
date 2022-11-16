@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace ManageStuffDBApp.View
 {
     /// <summary>
-    /// Interaction logic for AddNewEployeeWindow.xaml
+    /// Interaction logic for AddNewPositionWindow.xaml
     /// </summary>
-    public partial class AddNewEployeeWindow : Window
+    public partial class AddNewPositionWindow : Window
     {
-        public AddNewEployeeWindow()
+        public AddNewPositionWindow()
         {
             InitializeComponent();
         }
