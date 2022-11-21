@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManageStuffDBApp.View"
         mc:Ignorable="d"
-        Title="AddNewEmployeeWindow" Height="300" Width="300">
+        Title="AddNewEmployeeWindow" Height="300" Width="300"
+        Name="AddNewEmployeeWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -14,19 +15,17 @@
 
         <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
             <TextBlock Text="Name" />
-            <TextBox Text="" />
+            <TextBox Name="NameBlock" Text="{Binding EmployeeName}" />
             <TextBlock Text="Surname" />
-            <TextBox Text="" />
+            <TextBox Name="SurnameBlock" Text="{Binding EmployeeSurname}" />
             <TextBlock Text="Phone" />
-            <TextBox Text="" />
-            <TextBlock Text="Salary" />
-            <TextBox Text="" />
+            <TextBox Name="SurnamePhone" PreviewTextInput="PreviewTextInput" Text="{Binding EmployeePhone}" />
             <TextBlock Text="Position" />
-            <ComboBox />
-            <TextBlock Text="Department" />
-            <ComboBox />
+            <ComboBox ItemsSource="{Binding AllPositions}" 
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding EmployeePosition}" />
         </StackPanel>
 
-        <Button Grid.Row="1" Content="Add employee"/>
+        <Button Grid.Row="1" Content="Add employee" Command="{Binding AddNewEmployee}" CommandParameter="{Binding ElementName=AddNewEmployeeWnd}"/>
     </Grid>
 </Window>
