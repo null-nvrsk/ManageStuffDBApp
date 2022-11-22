@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ManageStuffDBApp.View"
         mc:Ignorable="d"
-        Title="EditEmployeeWindow" Height="300" Width="300">
+        Title="EditEmployeeWindow" Height="300" Width="300"
+        Name="EditEmployeeWnd">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -14,15 +15,27 @@
 
         <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
             <TextBlock Text="New name" />
-            <TextBox Text="" />
+            <TextBox Text="{Binding EmployeeName}" />
             <TextBlock Text="New surname" />
-            <TextBox Text="" />
+            <TextBox Text="{Binding EmployeeSurname}" />
             <TextBlock Text="New phone" />
-            <TextBox Text="" />
+            <TextBox>
+                <TextBox.Text>
+                    <Binding Path="EmployeePhone">
+                        <Binding.ValidationRules>
+                            <ExceptionValidationRule/>
+                        </Binding.ValidationRules>
+                    </Binding>
+                </TextBox.Text>
+            </TextBox>
             <TextBlock Text="New position" />
-            <ComboBox />
+            <ComboBox ItemsSource="{Binding AllPositions}"
+                      DisplayMemberPath="Name"
+                      SelectedItem="{Binding EmployeePosition}"/>
         </StackPanel>
 
-        <Button Grid.Row="1" Content="Edit employee"/>
+        <Button Grid.Row="1" Content="Edit employee"
+                Command="{Binding EditEmployee}"
+                CommandParameter="{Binding ElementName=EditEmployeeWnd}"/>
     </Grid>
 </Window>

@@ -51,25 +51,25 @@ namespace ManageStuffDBApp.ViewModel
         }
 
         // свойства для отдела
-        public string DepartmentName { get; set; }
+        public static string DepartmentName { get; set; }
 
         // свойства для должности
-        public string PositionName { get; set; }
-        public decimal PositionSalary { get; set; }
-        public int PositionMaxNumber { get; set; }
-        public Department PositionDepartment { get; set; }
+        public static string PositionName { get; set; }
+        public static decimal PositionSalary { get; set; }
+        public static int PositionMaxNumber { get; set; }
+        public static Department PositionDepartment { get; set; }
 
         // свойства для сотрудника
-        public string EmployeeName { get; set; }
-        public string EmployeeSurname { get; set; }
-        public string EmployeePhone { get; set; }
-        public Position EmployeePosition { get; set; }
+        public static string EmployeeName { get; set; }
+        public static string EmployeeSurname { get; set; }
+        public static string EmployeePhone { get; set; }
+        public static Position EmployeePosition { get; set; }
 
         // выделенные элементы
-        public TabItem SelectedTabItem { get; set; }
-        public Employee SelectedEmployee { get; set; }
-        public Position SelectedPosition { get; set; }
-        public Department SelectedDepartment { get; set; }
+        public static TabItem SelectedTabItem { get; set; }
+        public static Employee SelectedEmployee { get; set; }
+        public static Position SelectedPosition { get; set; }
+        public static Department SelectedDepartment { get; set; }
 
 
         #region ADD COMMANDS TO ADD
@@ -216,6 +216,92 @@ namespace ManageStuffDBApp.ViewModel
             }
         }
 
+        #region EDIT COMMANDS
+
+        private RelayCommand editEmployee;
+        public RelayCommand EditEmployee
+        {
+            get
+            {
+                return editEmployee ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "Не выбран сотрудник";
+                    string noPositionStr = "Не выбрана новая должность";
+
+                    if (SelectedEmployee != null)
+                    {
+                        if (EmployeePosition != null)
+                        {
+                            resultStr = DataWorker.EditEmpoyee(SelectedEmployee, EmployeeName, EmployeeSurname, EmployeePhone, EmployeePosition);
+
+                            UpdateDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(resultStr);
+                            window.Close();
+                        }
+                        else ShowMessageToUser(noPositionStr);
+                    }
+                    else ShowMessageToUser(resultStr);
+                });
+            }
+        }
+
+        private RelayCommand editPosition;
+        public RelayCommand EditPosition
+        {
+            get
+            {
+                return editPosition ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "Не выбрана должность";
+                    string noDepartmentStr = "Не выбран новый отдел";
+
+                    if (SelectedPosition != null)
+                    {
+                        if (PositionDepartment != null)
+                        {
+                            resultStr = DataWorker.EditPosition(SelectedPosition, PositionName, PositionSalary, PositionMaxNumber, PositionDepartment);
+
+                            UpdateDataView();
+                            SetNullValuesToProperties();
+                            ShowMessageToUser(resultStr);
+                            window.Close();
+                        }
+                        else ShowMessageToUser(noDepartmentStr);
+                    }
+                    else ShowMessageToUser(resultStr);
+                });
+            }
+        }
+
+        private RelayCommand editDepartment;
+        public RelayCommand EditDepartment
+        {
+            get
+            {
+                return editDepartment ?? new RelayCommand(obj =>
+                {
+                    Window window = obj as Window;
+                    string resultStr = "Не выбран отдел";
+
+                    if (SelectedDepartment != null)
+                    {
+                        resultStr = DataWorker.EditDepartment(SelectedDepartment, DepartmentName);
+
+                        UpdateDataView();
+                        SetNullValuesToProperties();
+                        ShowMessageToUser(resultStr);
+                        window.Close();
+                    }
+                    else ShowMessageToUser(resultStr);
+                });
+            }
+        }
+
+        #endregion
+
         #region COMMANDS TO OPEN WINDOWS
         private RelayCommand openAddNewDepartmentWnd;
         public RelayCommand OpenAddNewDepartmentWnd
@@ -256,6 +342,34 @@ namespace ManageStuffDBApp.ViewModel
             }
         }
 
+        private RelayCommand openEditItemWnd;
+        public RelayCommand OpenEditItemWnd
+        {
+            get
+            {
+                return openEditItemWnd ?? new RelayCommand(obj =>
+                {
+                    string resultStr = "ничего не выбрано";
+
+                    // Если сотрудник
+                    if (SelectedTabItem.Name == "EmployeesTab" && SelectedEmployee != null)
+                    {
+                        OpenEditEmployeeWindowMethod(SelectedEmployee);
+                    }
+                    // Если должность
+                    if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                    {
+                        OpenEditPositionWindowMethod(SelectedPosition);
+                    }
+                    // Если отдел
+                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
+                    {
+                        OpenEditDepartmentWindowMethod(SelectedDepartment);
+                    }
+                });
+            }
+        }
+
         #endregion
 
         #region METHODS TO OPEN/EDIT WINDOW
@@ -279,21 +393,21 @@ namespace ManageStuffDBApp.ViewModel
         }
 
         // Окна редактирования
-        private void OpenEditDepartmentWindowMethod()
+        private void OpenEditDepartmentWindowMethod(Department department)
         {
-            EditDepartmentWindow editDepartmentWindow = new EditDepartmentWindow();
+            EditDepartmentWindow editDepartmentWindow = new EditDepartmentWindow(department);
             SetCenterPositionAndOpen(editDepartmentWindow);
         }
 
-        private void OpenEditPositionWindowMethod()
+        private void OpenEditPositionWindowMethod(Position position)
         {
-            EditPositionWindow editPositionWindow = new EditPositionWindow();
+            EditPositionWindow editPositionWindow = new EditPositionWindow(position);
             SetCenterPositionAndOpen(editPositionWindow);
         }
 
-        private void OpenEditEmployeeWindowMethod()
+        private void OpenEditEmployeeWindowMethod(Employee employee)
         {
-            EditEmployeeWindow editEmployeeWindow = new EditEmployeeWindow();
+            EditEmployeeWindow editEmployeeWindow = new EditEmployeeWindow(employee);
             SetCenterPositionAndOpen(editEmployeeWindow);
         }
 
