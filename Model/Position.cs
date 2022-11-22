@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+
 
 namespace ManageStuffDBApp.Model
 {
@@ -16,5 +13,21 @@ namespace ManageStuffDBApp.Model
         public List<Employee> employees { get; set; }
         public int DepartmentId { get; set; }
         public Department Department { get; set; }
+        [NotMapped]
+        public Department PositionDepartment
+        {
+            get
+            {
+                return DataWorker.GetDepartmentById(DepartmentId);
+            }
+        }
+        [NotMapped]
+        public List<Employee> PositionEmployees
+        {
+            get
+            {
+                return DataWorker.GetAllEmloyeesByPositionId(Id);
+            }
+        }
     }
 }

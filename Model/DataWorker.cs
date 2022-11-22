@@ -1,9 +1,6 @@
 ﻿using ManageStuffDBApp.Model.Data;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ManageStuffDBApp.Model
 {
@@ -209,5 +206,52 @@ namespace ManageStuffDBApp.Model
             }
             return result;
         }
+
+        // получение должности по Id должности
+        public static Position GetPositionById(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                Position pos = db.Positions.FirstOrDefault(p => p.Id == id);
+                return pos;
+            }
+        }
+
+        // получение отдел по Id отдела
+        public static Department GetDepartmentById(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                Department dept = db.Departments.FirstOrDefault(d => d.Id == id);
+                return dept;
+            }
+        }
+
+        // Получение всех сотрудников по id должности
+        public static List<Employee> GetAllEmloyeesByPositionId(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                List<Employee> employees = (from employee
+                                            in GetAllEmployees() 
+                                            where employee.PositionId == id
+                                            select employee).ToList();
+                return employees;
+            }
+        }
+
+        // Получение всех должностей по id отдела
+        public static List<Position> GetAllPositionsByDepartmentId(int id)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                List<Position> positions = (from position
+                                            in GetAllPositions()
+                                            where position.DepartmentId == id
+                                            select position).ToList();
+                return positions;
+            }
+        }
+
     }
 }
