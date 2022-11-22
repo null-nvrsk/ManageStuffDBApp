@@ -65,6 +65,12 @@ namespace ManageStuffDBApp.ViewModel
         public string EmployeePhone { get; set; }
         public Position EmployeePosition { get; set; }
 
+        // выделенные элементы
+        public TabItem SelectedTabItem { get; set; }
+        public Employee SelectedEmployee { get; set; }
+        public Position SelectedPosition { get; set; }
+        public Department SelectedDepartment { get; set; }
+
 
         #region ADD COMMANDS TO ADD
 
@@ -173,6 +179,42 @@ namespace ManageStuffDBApp.ViewModel
         }
 
         #endregion
+
+        private RelayCommand deleteItem;
+        public RelayCommand DeleteItem
+        {
+            get
+            {
+                return deleteItem ?? new RelayCommand(obj =>
+                {
+                    string resultStr = "ничего не выбрано";
+
+                    // Если сотрудник
+                    if (SelectedTabItem.Name == "EmployeesTab" && SelectedEmployee != null)
+                    {
+                        resultStr = DataWorker.DeleteEmployee(SelectedEmployee);
+                        UpdateDataView();
+                    }
+                    // Если должность
+                    if (SelectedTabItem.Name == "PositionsTab" && SelectedPosition != null)
+                    {
+                        resultStr = DataWorker.DeletePosition(SelectedPosition);
+                        UpdateDataView();
+                    }
+                    // Если отдел
+                    if (SelectedTabItem.Name == "DepartmentsTab" && SelectedDepartment != null)
+                    {
+                        resultStr = DataWorker.DeleteDepartment(SelectedDepartment);
+                        UpdateDataView();
+                    }
+
+                    // обновление
+                    SetNullValuesToProperties();
+                    ShowMessageToUser(resultStr);
+
+                });
+            }
+        }
 
         #region COMMANDS TO OPEN WINDOWS
         private RelayCommand openAddNewDepartmentWnd;
